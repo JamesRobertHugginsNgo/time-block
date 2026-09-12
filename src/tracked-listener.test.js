@@ -14,7 +14,7 @@ describe('tracked-listener.test.js', () => {
 		addTrackedListener(target, 'change', listener);
 		target.dispatchEvent(event);
 
-		assert.ok(hasTrackedListener(target, 'change'));
+		assert.strictEqual(hasTrackedListener(target, 'change'), true);
 		assert.strictEqual(listener.mock.calls.length, 1);
 	});
 
@@ -26,7 +26,7 @@ describe('tracked-listener.test.js', () => {
 		addTrackedListener(target, 'change', listener, { once: true });
 		target.dispatchEvent(event);
 
-		assert.ok(!hasTrackedListener(target, 'change'));
+		assert.strictEqual(hasTrackedListener(target, 'change'), false);
 		assert.strictEqual(listener.mock.calls.length, 1);
 	});
 
@@ -38,7 +38,7 @@ describe('tracked-listener.test.js', () => {
 		addTrackedListener(target, 'change', listener);
 		removeTrackedListener(target, 'change', listener);
 
-		assert.ok(!hasTrackedListener(target, 'change'));
+		assert.strictEqual(hasTrackedListener(target, 'change'), false);
 	});
 
 		test('remove listener twice', () => {
@@ -50,6 +50,6 @@ describe('tracked-listener.test.js', () => {
 		removeTrackedListener(target, 'change', listener);
 		removeTrackedListener(target, 'change', listener);
 
-		assert.ok(!hasTrackedListener(target, 'change'));
+		assert.strictEqual(hasTrackedListener(target, 'change'), false);
 	});
 });

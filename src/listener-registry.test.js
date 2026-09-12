@@ -13,10 +13,10 @@ describe('listener-registry.test.js', () => {
 		const result = registry.add('change', listener);
 
 		assert.strictEqual(result, listener);
-		assert.ok(registry.has('change'));
-		assert.ok(registry.has('change', listener));
-		assert.ok(registry.has('change', listener, false));
-		assert.ok(!registry.has('change', listener, true));
+		assert.strictEqual(registry.has('change'), true);
+		assert.strictEqual(registry.has('change', listener), true);
+		assert.strictEqual(registry.has('change', listener, false), true);
+		assert.strictEqual(!registry.has('change', listener, true), true);
 	});
 
 	test('add captured listener', () => {
@@ -25,8 +25,8 @@ describe('listener-registry.test.js', () => {
 
 		registry.add('change', listener, true);
 
-		assert.ok(!registry.has('change', listener, false));
-		assert.ok(registry.has('change', listener, true));
+		assert.strictEqual(registry.has('change', listener, false), false);
+		assert.strictEqual(registry.has('change', listener, true), true);
 	});
 
 	test('add captured listener via options', () => {
@@ -35,8 +35,8 @@ describe('listener-registry.test.js', () => {
 
 		registry.add('change', listener, { capture: true });
 
-		assert.ok(!registry.has('change', listener, false));
-		assert.ok(registry.has('change', listener, true));
+		assert.strictEqual(registry.has('change', listener, { capture: false }), false);
+		assert.strictEqual(registry.has('change', listener, { capture: true }), true);
 	});
 
 	test('delete listener', () => {
@@ -46,7 +46,7 @@ describe('listener-registry.test.js', () => {
 		registry.add('change', listener);
 		registry.delete('change', listener);
 
-		assert.ok(!registry.has('change'));
+		assert.strictEqual(registry.has('change'), false);
 	});
 
 	test('ignore listener deletion', () => {
@@ -55,7 +55,7 @@ describe('listener-registry.test.js', () => {
 
 		registry.delete('change', listener);
 
-		assert.ok(!registry.has('change'));
+		assert.strictEqual(registry.has('change'), false);
 	});
 
 	test('add two listener and delete one', () => {
@@ -67,7 +67,7 @@ describe('listener-registry.test.js', () => {
 		registry.add('change', listener2);
 		registry.delete('change', listener1);
 
-		assert.ok(registry.has('change'));
+		assert.strictEqual(registry.has('change'), true);
 	});
 
 	test('add listener twice and delete it', () => {
@@ -78,7 +78,7 @@ describe('listener-registry.test.js', () => {
 		registry.add('change', listener);
 		registry.delete('change', listener);
 
-		assert.ok(!registry.has('change'));
+		assert.strictEqual(registry.has('change'), false);
 	});
 
 	test('add once listener and then call result listener', () => {
@@ -89,7 +89,7 @@ describe('listener-registry.test.js', () => {
 		result();
 
 		assert.notStrictEqual(listener, result);
-		assert.ok(!registry.has('change'));
+		assert.strictEqual(registry.has('change'), false);
 	});
 
 	test('add abortable listener and then abort', () => {
@@ -101,7 +101,7 @@ describe('listener-registry.test.js', () => {
 		abortController.abort();
 
 		assert.strictEqual(result, listener);
-		assert.ok(!registry.has('change'));
+		assert.strictEqual(registry.has('change'), false);
 	});
 
 	test('add aborted listener', () => {
@@ -113,6 +113,6 @@ describe('listener-registry.test.js', () => {
 		const result = registry.add('change', listener, { signal: abortController.signal });
 
 		assert.strictEqual(result, undefined);
-		assert.ok(!registry.has('change'));
+		assert.strictEqual(registry.has('change'), false);
 	});
 });
