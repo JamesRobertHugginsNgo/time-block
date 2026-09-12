@@ -54,6 +54,8 @@ describe('listener-registry.test.js', () => {
 		const listener = () => void 0;
 
 		registry.delete('change', listener);
+
+		assert.ok(!registry.has('change'));
 	});
 
 	test('add two listener and delete one', () => {
