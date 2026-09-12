@@ -3,7 +3,7 @@ import ListenerRegistry from './listener-registry.js';
 import assert from 'node:assert';
 import test, { describe } from 'node:test';
 
-// note: teste behaviour not implementation
+// note: test behaviour not implementation
 
 describe('listener-registry.test.js', () => {
 	test('add listener', () => {
