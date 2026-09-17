@@ -25,7 +25,7 @@ describe('make-state.test.js', async () => {
 		test('change property', () => {
 			const listener = mock.fn();
 			const [proxy, eventTarget] = makeState({ name: 'Alice' });
-			eventTarget.addEventListener('change', listener);
+			eventTarget.addEventListener(CHANGE_EVENT_TYPE, listener);
 
 			proxy['name'] = 'Bob';
 
@@ -44,7 +44,7 @@ describe('make-state.test.js', async () => {
 		test('set property', () => {
 			const listener = mock.fn();
 			const [proxy, eventTarget] = makeState({});
-			eventTarget.addEventListener('change', listener);
+			eventTarget.addEventListener(CHANGE_EVENT_TYPE, listener);
 
 			proxy['name'] = 'Alice';
 
@@ -63,7 +63,7 @@ describe('make-state.test.js', async () => {
 		test('delete property', () => {
 			const listener = mock.fn();
 			const [proxy, eventTarget] = makeState({ name: 'Alice' });
-			eventTarget.addEventListener('change', listener);
+			eventTarget.addEventListener(CHANGE_EVENT_TYPE, listener);
 
 			delete proxy['name'];
 
@@ -92,7 +92,7 @@ describe('make-state.test.js', async () => {
 			const listener = mock.fn();
 			const [addressProxy, addressEventTarget] = makeState({ city: 'Toronto' });
 			const [proxy, eventTarget] = makeState({ name: 'Alice', address: addressProxy });
-			eventTarget.addEventListener('change', listener);
+			eventTarget.addEventListener(CHANGE_EVENT_TYPE, listener);
 
 			proxy['address']['city'] = 'Ottawa';
 
@@ -112,7 +112,7 @@ describe('make-state.test.js', async () => {
 			const listener = mock.fn();
 			const [addressProxy, addressEventTarget] = makeState({});
 			const [proxy, eventTarget] = makeState({ name: 'Alice', address: addressProxy });
-			eventTarget.addEventListener('change', listener);
+			eventTarget.addEventListener(CHANGE_EVENT_TYPE, listener);
 
 			proxy['address']['city'] = 'Toronto';
 
@@ -132,7 +132,7 @@ describe('make-state.test.js', async () => {
 			const listener = mock.fn();
 			const [addressProxy, addressEventTarget] = makeState({ city: 'Toronto' });
 			const [proxy, eventTarget] = makeState({ name: 'Alice', address: addressProxy });
-			eventTarget.addEventListener('change', listener);
+			eventTarget.addEventListener(CHANGE_EVENT_TYPE, listener);
 
 			delete proxy['address']['city'];
 
@@ -159,7 +159,7 @@ describe('make-state.test.js', async () => {
 		test('change element', () => {
 			const listener = mock.fn();
 			const [proxy, eventTarget] = makeState(['Alice']);
-			eventTarget.addEventListener('change', listener);
+			eventTarget.addEventListener(CHANGE_EVENT_TYPE, listener);
 
 			proxy[0] = 'Bob';
 
@@ -178,7 +178,7 @@ describe('make-state.test.js', async () => {
 		test('push element', () => {
 			const listener = mock.fn();
 			const [proxy, eventTarget] = makeState([]);
-			eventTarget.addEventListener('change', listener);
+			eventTarget.addEventListener(CHANGE_EVENT_TYPE, listener);
 
 			proxy.push('Alice');
 
@@ -197,7 +197,7 @@ describe('make-state.test.js', async () => {
 		test('pop element', () => {
 			const listener = mock.fn();
 			const [proxy, eventTarget] = makeState(['Alice']);
-			eventTarget.addEventListener('change', listener);
+			eventTarget.addEventListener(CHANGE_EVENT_TYPE, listener);
 
 			const result = proxy.pop();
 
@@ -237,7 +237,7 @@ describe('make-state.test.js', async () => {
 			const listener = mock.fn();
 			const [addressProxy, addressEventTarget] = makeState(['Toronto']);
 			const [proxy, eventTarget] = makeState(['Alice', addressProxy]);
-			eventTarget.addEventListener('change', listener);
+			eventTarget.addEventListener(CHANGE_EVENT_TYPE, listener);
 
 			proxy[1][0] = 'Ottawa';
 
@@ -257,7 +257,7 @@ describe('make-state.test.js', async () => {
 			const listener = mock.fn();
 			const [addressProxy, addressEventTarget] = makeState([]);
 			const [proxy, eventTarget] = makeState(['Alice', addressProxy]);
-			eventTarget.addEventListener('change', listener);
+			eventTarget.addEventListener(CHANGE_EVENT_TYPE, listener);
 
 			proxy[1].push('Toronto');
 
@@ -277,7 +277,7 @@ describe('make-state.test.js', async () => {
 			const listener = mock.fn();
 			const [addressProxy, addressEventTarget] = makeState(['Toronto']);
 			const [proxy, eventTarget] = makeState(['Alice', addressProxy]);
-			eventTarget.addEventListener('change', listener);
+			eventTarget.addEventListener(CHANGE_EVENT_TYPE, listener);
 
 			const result = proxy[1].pop();
 
@@ -293,7 +293,6 @@ describe('make-state.test.js', async () => {
 				dispatched: new Set([addressEventTarget, eventTarget])
 			});
 			// quirk of array proxy is length change is unreliable
-			console.log(listener.mock.calls[1].arguments[0].detail.change);
 			assert.deepStrictEqual(listener.mock.calls[1].arguments[0].detail.change, {
 				target: [],
 				property: 'length',
